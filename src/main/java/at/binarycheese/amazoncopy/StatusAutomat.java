@@ -22,4 +22,36 @@ public class StatusAutomat {
         }
         status = Status.IDENTIFIED;
     }
+
+    public void selectProduct(){
+        if(status != Status.IDENTIFIED && status != Status.PAYMENT && status != Status.PRODUCT_SELECTED){
+            throw new StatusException("You need to be identified");
+        }
+        status = Status.PRODUCT_SELECTED;
+    }
+
+    public void checkOut(){
+        if(status != Status.PRODUCT_SELECTED && status != Status.PAY_ERROR){
+            throw new StatusException("You have no products selected!");
+        }
+        status = Status.PAYMENT;
+    }
+
+    public void buyFails(){
+        if(status != Status.PAYMENT){
+            throw new StatusException("No payment currently running");
+        }
+        status = Status.PAY_ERROR;
+    }
+
+    public void pay(){
+        if(status!=Status.PAYMENT){
+            throw new StatusException("No payment currently running");
+        }
+        status = Status.PAID;
+    }
+
+    public void abort(){
+        status = Status.ABORT;
+    }
 }
